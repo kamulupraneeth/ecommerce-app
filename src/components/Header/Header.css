@@ -1,0 +1,36 @@
+.logo {
+  width: 100px;
+}
+.header {
+  display: flex;
+  align-items: center;
+  background-color: #2873f0;
+  padding: 15px;
+  justify-content: center;
+  gap: 35px;
+  color: #fff;
+}
+.cart-icon {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #fff;
+  text-decoration: none;
+}
+.search-input {
+  padding: 10px;
+  width: 300px;
+  border: none;
+}
+.search-input:focus {
+  outline: none;
+}
+.login {
+  /* height: 60px; */
+  background-color: #fff;
+  color: #2873f0;
+  /* max-width: 200px; */
+  /* padding: 10px 20px; */
+  padding: 5px 35px;
+  border: none;
+}
