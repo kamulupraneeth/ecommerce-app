@@ -26,11 +26,20 @@
   outline: none;
 }
 .login {
-  /* height: 60px; */
   background-color: #fff;
   color: #2873f0;
-  /* max-width: 200px; */
-  /* padding: 10px 20px; */
   padding: 5px 35px;
   border: none;
+}
+.cart__count__container {
+  position: relative;
+}
+.cart__count {
+  position: absolute;
+  top: -8px;
+  background: red;
+  padding: 0 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  left: 6px;
 }

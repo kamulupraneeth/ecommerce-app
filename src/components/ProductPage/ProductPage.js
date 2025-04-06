@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchProduct } from "../../redux/actions/productActions";
@@ -11,6 +11,9 @@ const ProductPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const cartItems = useSelector((state) => state.cart.cartItems);
+
+  const isInCart = cartItems.some((item) => item.id === Number(id));
   useEffect(() => {
     dispatch(fetchProduct(id));
   }, []);
@@ -18,8 +21,6 @@ const ProductPage = () => {
   const selectedProduct = useSelector(
     (state) => state.products.selectedProduct
   );
-
-  const cartItems = useSelector((state) => state.cart.cartItems);
 
   if (!selectedProduct) {
     return <p>Loading....</p>;
@@ -39,12 +40,22 @@ const ProductPage = () => {
           className="selected-image"
         />
         <div className="cart__buttons">
-          <button
-            className="cart__button cart__button--add"
-            onClick={handleAddToCart}
-          >
-            Add to cart
-          </button>
+          {isInCart ? (
+            <button
+              className="cart__button cart__button--add"
+              onClick={() => navigate("/cart")}
+            >
+              Go To Cart
+            </button>
+          ) : (
+            <button
+              className="cart__button cart__button--add"
+              onClick={handleAddToCart}
+            >
+              Add to cart
+            </button>
+          )}
+
           <button className="cart__button cart__button--buy">Buy now</button>
         </div>
       </div>

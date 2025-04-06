@@ -16,11 +16,10 @@ const LandingPage = () => {
     (state) => state.products.selectedCategory
   );
 
-  const category = useSelector((state) => state.products.categories);
-
   useEffect(() => {
-    dispatch(fetchProducts());
-    // dispatch(fetchCategories());
+    if (!products.length) {
+      dispatch(fetchProducts());
+    }
   }, []);
 
   const handleCategoryChange = (e) => {
@@ -31,12 +30,6 @@ const LandingPage = () => {
     dispatch(setCategoryFilter(""));
   };
 
-  // console.log("products", products);
-
-  // console.log("selected category", selectedCategory);
-
-  console.log("---", category);
-
   let filteredProducts = products.filter((product) => {
     return selectedCategory ? product.category === selectedCategory : true;
   });
@@ -45,7 +38,9 @@ const LandingPage = () => {
     return product.category;
   });
 
-  return (
+  return !products.length ? (
+    <h1 className="products__empty">Network is not available</h1>
+  ) : (
     <div>
       <select
         name=""

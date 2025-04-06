@@ -1,6 +1,10 @@
+import { useLocation } from "react-router-dom";
 import "./Footer.css";
 
 const Footer = () => {
+  const location = useLocation();
+  const isCartPage = location.pathname === "/cart";
+  if (isCartPage) return null;
   return (
     <footer className="footer-section-main">
       <main className="footer-section-container">

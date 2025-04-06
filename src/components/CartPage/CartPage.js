@@ -1,12 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./CartPage.css";
 // import deleter
-import { FiTrash2 } from "react-icons/fi";
-import { removeFromCart } from "../../redux/actions/cartActions";
+import { FiTrash2, FiPlus, FiMinus } from "react-icons/fi";
+import {
+  decrementProductCount,
+  incrementProductCount,
+  removeFromCart,
+} from "../../redux/actions/cartActions";
+import { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import { SET_CATEGORY_FILTER } from "../../redux/actionTypes/actionTypes";
+import { setCategoryFilter } from "../../redux/actions/productActions";
 
 const CartPage = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const navigate = useNavigate();
 
   const handleDelete = (id) => {
     dispatch(removeFromCart(id));
@@ -14,30 +23,69 @@ const CartPage = () => {
 
   let itemPrice = null;
 
+  const handleIncrement = (item) => {
+    dispatch(incrementProductCount(item.id));
+  };
+
+  const handleDecrement = (item) => {
+    dispatch(decrementProductCount(item.id));
+  };
+
   return (
-    <div>
+    <div className={!cartItems.length ? "cart-page" : null}>
       {cartItems.length === 0 ? (
-        <p>Your cart is empty</p>
+        <div className="empty_cart_message">
+          <p>Your cart is empty</p>
+          <button
+            onClick={() => {
+              navigate("/");
+              dispatch(setCategoryFilter(""));
+            }}
+          >
+            Shop now
+          </button>
+        </div>
       ) : (
         <main className="cart-section">
           <section>
             <ul>
               {cartItems.map((item) => {
-                itemPrice = item.price;
+                const totalPrice = cartItems.reduce((total, item) => {
+                  return total + item.price * item.count;
+                }, 0);
+                itemPrice = totalPrice.toFixed(2);
                 return (
-                  <li className="cartItem" key={item.title}>
-                    <img src={item.image} alt={item.title} width={50} />
-                    <div>
-                      <p>{item.title}</p>
-                      <p>Price: ₹{item.price}</p>
+                  <div className="cartItem__container" key={item.title}>
+                    <li className="cartItem">
+                      <img src={item.image} alt={item.title} width={50} />
+                      <div>
+                        <p>{item.title}</p>
+                        <p>Price: ₹{item.price}</p>
+                      </div>
+                      <button
+                        className="delete-button"
+                        onClick={() => handleDelete(item.id)}
+                      >
+                        <FiTrash2 size={15} />
+                      </button>
+                    </li>
+                    <div className="product__count--container">
+                      <button
+                        onClick={() => handleDecrement(item)}
+                        disabled={item.count === 1}
+                        className="product__count__container--btn"
+                      >
+                        <FiMinus size={15} />
+                      </button>
+                      <span className="cart__product__count">{item.count}</span>
+                      <button
+                        onClick={() => handleIncrement(item)}
+                        className="product__count__container--btn"
+                      >
+                        <FiPlus size={15} />
+                      </button>
                     </div>
-                    <button
-                      className="delete-button"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <FiTrash2 size={15} />
-                    </button>
-                  </li>
+                  </div>
                 );
               })}
             </ul>

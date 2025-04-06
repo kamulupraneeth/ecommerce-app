@@ -1,5 +1,3 @@
-import axios from "axios";
-import { API_URL, BASE_URL } from "../../utils/utils";
 import {
   FETCH_CATEGORIES,
   FETCH_PRODUCT,
